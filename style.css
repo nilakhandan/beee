@@ -1,0 +1,65 @@
+:root{--bg:#050B12;--panel:rgba(14,28,42,.62);--line:rgba(0,229,255,.18);--cy:#00E5FF;--ye:#FFD700;--tx:#E6F4F8;--mu:#7F9AA6;--ok:#2BE39A;--er:#FF4D5E;--wr:#FFB020;--r:14px}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--tx);font:15px/1.5 Inter,system-ui,sans-serif;display:flex;
+background-image:linear-gradient(rgba(0,229,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.045) 1px,transparent 1px);background-size:36px 36px;padding-top:env(safe-area-inset-top)}
+h1,h2,h3,.disp{font-family:'Chakra Petch',Inter,sans-serif;letter-spacing:.02em}
+nav{width:220px;flex:none;border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column;gap:4px;background:rgba(5,11,18,.8);backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.brand b{font:700 28px 'Chakra Petch';color:var(--ye);letter-spacing:.08em;text-shadow:0 0 18px rgba(255,215,0,.45)}
+.brand small{display:block;color:var(--cy);font-size:12px}
+nav button{all:unset;cursor:pointer;padding:10px 12px;border-radius:10px;color:var(--mu);display:flex;gap:10px;align-items:center}
+nav button:hover{color:var(--tx);background:rgba(0,229,255,.06)}
+nav button.on{color:var(--cy);background:rgba(0,229,255,.1);box-shadow:inset 2px 0 var(--cy)}
+nav button:focus-visible,.btn:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+main{flex:1;min-width:0;display:flex;flex-direction:column;height:100%;overflow:auto}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;background:rgba(5,11,18,.85);backdrop-filter:blur(10px)}
+header h1{font-size:20px}header p{color:var(--mu);font-size:13px}
+.seg{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{all:unset;cursor:pointer;padding:6px 14px;font-size:13px;color:var(--mu)}
+.seg button.on{background:var(--cy);color:#00161a;font-weight:600}.seg button.on.demo{background:var(--ye)}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;font-size:13px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--mu)}
+.dot.ok{background:var(--ok);box-shadow:0 0 10px var(--ok)}.dot.er{background:var(--er);box-shadow:0 0 10px var(--er)}.dot.wr{background:var(--wr)}.dot.busy{background:var(--cy);animation:p 1s infinite}
+@keyframes p{50%{opacity:.25}}
+#banner{display:none;background:rgba(255,215,0,.12);border-bottom:1px solid var(--ye);color:var(--ye);padding:8px 24px;font-size:13px}
+#banner.show{display:block}
+.view{display:none;padding:24px;gap:16px;flex-direction:column;animation:in .25s}.view.on{display:flex}
+@keyframes in{from{opacity:0}}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;backdrop-filter:blur(14px)}
+.panel h3{font-size:14px;color:var(--mu);font-weight:500;margin-bottom:6px}
+.val{font:700 24px 'Chakra Petch'}.sub{font-size:12px;color:var(--mu);margin-top:2px}
+.ok{color:var(--ok)}.er{color:var(--er)}.wr{color:var(--wr)}.na{color:var(--mu)}
+.hero{position:relative;overflow:hidden;min-height:260px;border-radius:var(--r);border:1px solid var(--line);display:flex;align-items:flex-end}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#050B12 8%,transparent 70%)}
+.hero div{position:relative;z-index:1;padding:20px}
+.hero h2{font-size:clamp(28px,5vw,48px);line-height:1.05}.hero h2 span{color:var(--ye)}
+.hero p{color:var(--cy)}
+.btn{all:unset;cursor:pointer;padding:9px 16px;border:1px solid var(--line);border-radius:10px;background:rgba(0,229,255,.08);text-align:center;user-select:none;-webkit-user-select:none;touch-action:none}
+.btn:hover{border-color:var(--cy)}.btn.pri{background:var(--cy);color:#00161a;font-weight:600}.btn.dng{background:var(--er);color:#fff;font-weight:700}
+.btn:disabled,.btn[aria-disabled=true]{opacity:.4;cursor:not-allowed}
+.btn.act{background:var(--cy);color:#00161a}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pad{display:grid;grid-template-columns:repeat(3,92px);grid-template-rows:repeat(3,92px);gap:10px;justify-content:center;margin:10px 0}
+.pad .btn{display:grid;place-items:center;font:700 18px 'Chakra Petch';border-radius:18px}
+.pad .f{grid-area:1/2}.pad .l{grid-area:2/1}.pad .s{grid-area:2/2;color:var(--ye)}.pad .r{grid-area:2/3}.pad .b{grid-area:3/2}
+.two{display:grid;gap:16px;grid-template-columns:1fr 1fr}
+.cam{background:#000;border:1px solid var(--line);border-radius:var(--r);aspect-ratio:4/3;display:grid;place-items:center;overflow:hidden;position:relative}
+.cam img{width:100%;height:100%;object-fit:contain;display:none}
+.cam.live img{display:block}.cam.live .ph{display:none}.ph{color:var(--mu);text-align:center;padding:20px}
+label{display:block;font-size:13px;color:var(--mu);margin:10px 0 4px}
+input,select{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--tx);border-radius:10px;padding:9px 12px;font:inherit}
+canvas{width:100%;height:200px;display:block}
+#term{background:#02070c;border:1px solid var(--line);border-radius:var(--r);padding:12px;height:52vh;overflow:auto;font:13px/1.6 ui-monospace,Menlo,Consolas,monospace}
+#term .t{color:var(--mu)}.hist li{list-style:none;padding:6px 0;border-bottom:1px solid var(--line);font-size:13px}
+.hist{padding:0}
+.bar{height:10px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--ok)}
+@media(max-width:820px){
+body{flex-direction:column-reverse}
+nav{width:100%;flex-direction:row;overflow-x:auto;padding:8px 8px calc(8px + env(safe-area-inset-bottom));border-right:0;border-top:1px solid var(--line);position:sticky;bottom:0;z-index:9}
+.brand{display:none}nav button{flex:none;flex-direction:column;gap:0;font-size:12px;padding:6px 10px}
+.two{grid-template-columns:1fr}header,.view{padding:14px}main{height:auto;flex:1}
+.pad{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,84px)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}

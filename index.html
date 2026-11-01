@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BEE RoboRescue – Autonomous Disaster Response System</title>
+<meta name="theme-color" content="#050B12">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐝</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav id="nav" aria-label="Main"></nav>
+<main>
+<header>
+ <div><h1>BEE RoboRescue</h1><p>Autonomous Disaster Response System</p></div>
+ <div class="row">
+  <div class="seg" id="modeSeg" role="group" aria-label="Operating mode"><button data-mode="real">Real hardware</button><button data-mode="demo" class="demo">Demo</button></div>
+  <span class="pill"><span class="dot" id="hdot"></span><span id="htxt">Not checked</span></span>
+ </div>
+</header>
+<div id="banner">DEMO MODE: no commands are sent to the rover. Nothing shown here reflects real hardware.</div>
+
+<section class="view" id="v-dashboard">
+ <div class="hero"><img src="assets/rover.png" alt="BEE rover with ESP32-CAM, HC-SR04 and OLED"><div><h2><span>BEE</span> RoboRescue</h2><p>Autonomous Disaster Response System</p></div></div>
+ <div class="grid" id="dash"></div>
+</section>
+
+<section class="view" id="v-control">
+ <div class="two">
+  <div class="panel">
+   <h3>Drive</h3>
+   <div class="pad">
+    <button class="btn f" data-m="F" aria-label="Forward">▲ W</button>
+    <button class="btn l" data-m="L" aria-label="Left">◀ A</button>
+    <button class="btn s" data-m="S" aria-label="Stop">STOP</button>
+    <button class="btn r" data-m="R" aria-label="Right">D ▶</button>
+    <button class="btn b" data-m="B" aria-label="Backward">S ▼</button>
+   </div>
+   <button class="btn dng" id="estop" style="width:100%;padding:16px;font-size:18px">EMERGENCY STOP</button>
+   <p class="sub" id="lockNote" style="margin-top:8px"></p>
+   <p class="sub">Hold a button or key to move. Release stops the rover. WASD, arrow keys; Space stops.</p>
+  </div>
+  <div class="panel">
+   <h3>Connection</h3>
+   <div class="row"><span class="dot" id="cdot"></span><b id="ctxt">Not checked</b></div>
+   <label for="ip">Rover address</label>
+   <input id="ip" placeholder="http://192.168.4.1" inputmode="url">
+   <div class="row" style="margin-top:10px"><button class="btn pri" id="save-ip">Save and test</button></div>
+   <div class="sub" id="cdet" style="margin-top:10px"></div>
+   <label>Last command</label><div class="val" id="lastc">None</div>
+  </div>
+ </div>
+</section>
+
+<section class="view" id="v-camera">
+ <div class="row"><span class="pill"><span class="dot" id="camdot"></span><span id="camtxt">Not configured</span></span>
+  <button class="btn" id="camReload">Reconnect</button><button class="btn" id="camFull">Full screen</button><button class="btn" id="camSnap">Open snapshot</button></div>
+ <div class="cam" id="cam"><img id="camimg" alt="ESP32-CAM live stream"><div class="ph" id="camph">Set the ESP32-CAM stream URL in Settings.</div></div>
+ <p class="sub">Snapshot opens <code>/capture</code> on the camera address (standard ESP32-CAM firmware). Saving from the page is blocked by the browser unless the camera sends CORS headers.</p>
+</section>
+
+<section class="view" id="v-sensors">
+ <div class="grid">
+  <div class="panel"><h3>HC-SR04 distance</h3><div class="val" id="dist">Unavailable</div><div class="sub" id="distsub"></div></div>
+  <div class="panel"><h3>Obstacle warning</h3><div class="val" id="obs">Unavailable</div><div class="sub">Warns under <span id="thv">20</span> cm</div></div>
+  <div class="panel"><h3>Sensor link</h3><div class="val" id="sstat">Not configured</div><div class="sub" id="ssub"></div></div>
+ </div>
+ <div class="panel"><h3>Distance history (cm)</h3><canvas id="chart"></canvas></div>
+</section>
+
+<section class="view" id="v-battery">
+ <div class="grid">
+  <div class="panel"><h3>Voltage</h3><div class="val" id="bv">Unavailable</div></div>
+  <div class="panel"><h3>Charge</h3><div class="val" id="bp">Unavailable</div><div class="bar"><i id="bbar" style="width:0"></i></div></div>
+  <div class="panel"><h3>Power status</h3><div class="val" id="bs">Unavailable</div><div class="sub" id="bsub">Battery monitoring hardware not connected.</div></div>
+ </div>
+ <div class="panel"><div class="sub">Needs a voltage divider on an ESP32 ADC pin plus firmware that serves the reading. Set the endpoint in Settings. Percentage assumes a 2S Li-ion pack (6.0 V empty, 8.4 V full).</div></div>
+</section>
+
+<section class="view" id="v-mission">
+ <div class="two">
+  <div class="panel"><h3>Mission timer</h3><div class="val" id="mt" style="font-size:44px">00:00:00</div><div class="sub" id="ms">No mission</div>
+   <div class="row" style="margin-top:14px"><button class="btn pri" id="m-start">Start</button><button class="btn" id="m-pause">Pause</button><button class="btn dng" id="m-stop">Stop</button></div>
+   <p class="sub" style="margin-top:10px">Missions track time and activity. They do not move the rover; use the Control tab to drive.</p></div>
+  <div class="panel"><h3>Activity history</h3><ul class="hist" id="mh"><li class="na">No activity yet.</li></ul></div>
+ </div>
+</section>
+
+<section class="view" id="v-terminal">
+ <div class="row"><button class="btn" id="tpause">Pause</button><button class="btn" id="tclear">Clear</button></div>
+ <div id="term" role="log" aria-live="off"></div>
+</section>
+
+<section class="view" id="v-settings">
+ <div class="two">
+  <div class="panel"><h3>Connections</h3>
+   <label for="s-base">ESP32 base URL</label><input id="s-base" placeholder="http://192.168.4.1">
+   <label for="s-cam">Camera stream URL</label><input id="s-cam" placeholder="http://192.168.4.2:81/stream">
+   <label for="s-snap">Snapshot URL (optional)</label><input id="s-snap" placeholder="http://192.168.4.2/capture">
+   <label for="s-sens">Distance endpoint (empty until firmware has one)</label><input id="s-sens" placeholder="/distance">
+   <label for="s-bat">Battery endpoint (empty until hardware is wired)</label><input id="s-bat" placeholder="/battery">
+   <label for="s-to">Connection timeout (ms)</label><input id="s-to" type="number" min="300" max="10000" step="100">
+   <label for="s-th">Obstacle warning distance (cm)</label><input id="s-th" type="number" min="5" max="200">
+   <label for="s-ks">Keyboard controls</label><select id="s-ks"><option value="1">Enabled</option><option value="0">Disabled</option></select>
+   <div class="row" style="margin-top:14px"><button class="btn pri" id="s-save">Save settings</button><button class="btn" id="s-diag">Run diagnostics</button></div>
+  </div>
+  <div class="panel"><h3>Diagnostics</h3><ul class="hist" id="diag"><li class="na">Run diagnostics to test each connection.</li></ul>
+   <h3 style="margin-top:18px">Wi-Fi setup</h3>
+   <ol class="sub" style="padding-left:18px;line-height:1.8"><li>Power the rover and join its Wi-Fi network (or put both on the same router).</li><li>Find the ESP32 IP in the serial monitor or router.</li><li>Enter it above as <code>http://IP</code>, then Save and test.</li><li>This site is HTTPS, so browsers block plain-HTTP rovers. See README: use a secure tunnel, or run this app locally over HTTP.</li></ol>
+  </div>
+ </div>
+</section>
+<p class="sub" style="padding:0 24px 24px">BEE RoboRescue by BEE. Built for the ESP32 rover with ESP32-CAM, HC-SR04 and OLED.</p>
+</main>
+
+<script src="js/app.js"></script>
+</body>
+</html>
